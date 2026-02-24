@@ -148,3 +148,49 @@ function renderInterview() {
         filteredSection.appendChild(div);
     });
 }
+
+function renderRejected() {
+    filteredSection.innerHTML = '';
+
+    if (RejectedList.length === 0) {
+        notFoundSection.classList.remove('hidden');
+        return;
+    }
+
+    notFoundSection.classList.add('hidden');
+
+    RejectedList.forEach(job => {
+        const div = document.createElement('div');
+        div.className = 'card flex justify-between border shadow-lg p-8';
+
+        div.innerHTML = 
+            ` <!-- main part-1 -->
+             <div class="space-y-6">
+                <!-- part -1 -->
+                 <div>
+                    <h1 class="fristCorp text-2xl font-semibold">${job.fristCorp}</h1>
+                <p class="nativeDeveloper text-gray-400">${job.nativeDeveloper}</p>
+                 </div>
+                 <!-- part -2 -->
+                  <div>
+                    <p class="remoteJob text-gray-400">${job.remoteJob}</p>
+                  </div>
+                  <!-- part -3 -->
+                    <p class="status">${job.status}</p>
+                    <p class="notes ">${job.notes}</p> 
+
+                    <div class="flex gap-3">
+                        <button class="interview-btn shadow-lg border border-green-400 px-4 py-2 text-green-400 font-bold rounded-sm ">interview</button>
+                        <button class="rejected-btn shadow-lg border border-red-400 px-4 py-2 text-red-400 font-bold rounded-sm">Rejected</button>
+                    </div>
+             </div>
+             <!-- main part-2 -->
+              <div >
+               <button class="btn-delete" > <i class="fa-regular fa-trash-can"></i></button>
+              </div>
+        `
+        ;
+
+        filteredSection.appendChild(div);
+    });
+}
