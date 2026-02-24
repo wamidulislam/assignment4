@@ -4,6 +4,7 @@ let RejectedList = [];
 let currentStatus = 'all-job-btn';
 
 let total = document.getElementById('Total');
+let jobCalculate = document.getElementById('job calculate')
 let Interview = document.getElementById('Interview');
 let Rejected = document.getElementById('Rejected');
 
@@ -20,6 +21,7 @@ function calculateCount() {
     total.innerText = allCardSection.children.length;
     Interview.innerText = InterviewList.length;
     Rejected.innerText = RejectedList.length;
+    jobCalculate.innerText = allCardSection.children.length;
 }
 calculateCount();
 
