@@ -53,3 +53,98 @@ function toggleStyle(id) {
         filteredSection.classList.add('hidden');
     }
 }
+
+mainContainer.addEventListener('click', function (event) {
+
+    const card = event.target.closest('.card');
+    if (!card) return;
+
+    const fristCorp = card.querySelector('.fristCorp').innerText;
+    const nativeDeveloper = card.querySelector('.nativeDeveloper').innerText;
+    const remoteJob = card.querySelector('.remoteJob').innerText;
+    const notes = card.querySelector('.notes').innerText;
+
+    if (event.target.classList.contains('interview-btn')) {
+
+        card.querySelector('.status').innerText = 'Interview';
+
+        const cardInfo = { fristCorp, nativeDeveloper, remoteJob, status: 'Interview', notes };
+
+        if (!InterviewList.find(item => item.fristCorp === fristCorp)) {
+            InterviewList.push(cardInfo);
+        }
+
+        RejectedList = RejectedList.filter(item => item.fristCorp !== fristCorp);
+
+        calculateCount();
+
+        if (currentStatus === 'interview-job-btn') renderInterview();
+        if (currentStatus === 'rejected-job-btn') renderRejected();
+    }
+
+    if (event.target.classList.contains('rejected-btn')) {
+
+        card.querySelector('.status').innerText = 'Rejected';
+
+        const cardInfo = { fristCorp, nativeDeveloper, remoteJob, status: 'Rejected', notes };
+
+        if (!RejectedList.find(item => item.fristCorp === fristCorp)) {
+            RejectedList.push(cardInfo);
+        }
+
+        InterviewList = InterviewList.filter(item => item.fristCorp !== fristCorp);
+
+        calculateCount();
+
+        if (currentStatus === 'interview-job-btn') renderInterview();
+        if (currentStatus === 'rejected-job-btn') renderRejected();
+    }
+
+    if (event.target.closest('.btn-delete')) {
+        InterviewList = InterviewList.filter(item => item.fristCorp !== fristCorp);
+        RejectedList = RejectedList.filter(item => item.fristCorp !== fristCorp);
+
+        card.remove();
+        calculateCount();
+
+        if (currentStatus === 'interview-job-btn') renderInterview();
+        if (currentStatus === 'rejected-job-btn') renderRejected();
+    }
+});
+
+function renderInterview() {
+    filteredSection.innerHTML = '';
+
+    if (InterviewList.length === 0) {
+        notFoundSection.classList.remove('hidden');
+        return;
+    }
+
+    notFoundSection.classList.add('hidden');
+
+    InterviewList.forEach(job => {
+        const div = document.createElement('div');
+        div.className = 'card flex justify-between border shadow-lg p-8';
+
+        div.innerHTML = `
+            <div class="space-y-4">
+                <h1 class="fristCorp text-2xl font-semibold">${job.fristCorp}</h1>
+                <p class="nativeDeveloper text-gray-400">${job.nativeDeveloper}</p>
+                <p class="remoteJob text-gray-400">${job.remoteJob}</p>
+                <p class="status">${job.status}</p>
+                <p class="notes">${job.notes}</p>
+
+                <div class="flex gap-3">
+                    <button class="interview-btn border border-green-400 px-4 py-2 text-green-400">Interview</button>
+                    <button class="rejected-btn border border-red-400 px-4 py-2 text-red-400">Rejected</button>
+                </div>
+            </div>
+
+            <button class="btn-delete">
+                <i class="fa-regular fa-trash-can"></i>
+            </button>
+        `;
+
+        filteredSection.appendChild(div);
+    });
+}
